@@ -9,13 +9,13 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Awake()
     {
-        EnemyManager.instance.AddEnemy(this);
+        EnemyManager.Instance.AddEnemy(this);
         _stunTimer = 0;
     }
 
     protected virtual void OnDestroy()
     {
-        EnemyManager.instance.RemoveEnemy(this);
+        EnemyManager.Instance.RemoveEnemy(this);
     }
 
     public void Move()

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -7,22 +8,22 @@ public class EnemyManager : MonoBehaviour
     private IList<EnemyBase> _enemiesList;
 
     // singleton
-    public static EnemyManager instance;
+    public static EnemyManager Instance { get; private set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (instance != null)
+        if (Instance != null)
         {
             Destroy(this);
             return;
         }
 
-        instance = this;
+        Instance = this;
         _enemiesList = new List<EnemyBase>();
     }
 
-    void InputReceived(bool pressedDown)
+    public void InputReceived(InputAction.CallbackContext context, bool pressedDown)
     {
         foreach (EnemyBase enemy in _enemiesList)
         {

@@ -7,9 +7,9 @@ public class PlayerControls : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private PlayerInput _playerInput;
-    
+
     public static PlayerControls Instance { get; private set; }
-    public ActionInputPlayerThing PlayerInputActions {get; private set;}
+    public ActionInputPlayerThing PlayerInputActions { get; private set; }
 
     ControlToggler WPress;
     ControlToggler SPress;
@@ -40,28 +40,31 @@ public class PlayerControls : MonoBehaviour
 
     public class ControlToggler
     {
-        System.Action<InputAction.CallbackContext,bool> callback;
+        System.Action<InputAction.CallbackContext, bool> callback;
+        System.Action<InputAction.CallbackContext, bool> enemyCallback;
         bool keyPressed = false;
 
         public ControlToggler(Vector2 direction)
         {
-            callback = (context,isPressed) => PlayerControls.Instance.moveSomewhere(context, direction, isPressed);
+            callback = (context, isPressed) => PlayerControls.Instance.moveSomewhere(context, direction, isPressed);
+            enemyCallback = EnemyManager.Instance.InputReceived;
         }
 
         public void checkOnOrOff(bool p, InputAction.CallbackContext contextOnOrOff)
         {
-            if(keyPressed!=p)
+            if (keyPressed != p)
             {
                 keyPressed = p;
-                callback(contextOnOrOff,keyPressed);
-            } 
+                callback(contextOnOrOff, keyPressed);
+                enemyCallback(contextOnOrOff, keyPressed);
+            }
         }
 
     }
 
     private void BindControls()
     {
-        PlayerInputActions.Player.W.performed += context => WPress.checkOnOrOff(true,context);
+        PlayerInputActions.Player.W.performed += context => WPress.checkOnOrOff(true, context);
         PlayerInputActions.Player.W.canceled += context => WPress.checkOnOrOff(false, context);
         PlayerInputActions.Player.S.performed += context => SPress.checkOnOrOff(true, context);
         PlayerInputActions.Player.S.canceled += context => SPress.checkOnOrOff(false, context);
@@ -71,7 +74,7 @@ public class PlayerControls : MonoBehaviour
         PlayerInputActions.Player.D.canceled += context => DPress.checkOnOrOff(false, context);
     }
 
-    private void moveSomewhere(InputAction.CallbackContext context, Vector2 direction,bool isPressed)
+    private void moveSomewhere(InputAction.CallbackContext context, Vector2 direction, bool isPressed)
     {
         if (isPressed)
         {
