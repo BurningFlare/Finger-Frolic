@@ -1,15 +1,13 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class WalkableTiles : MonoBehaviour
 {
-    private void OnTriggerExit2D(UnityEngine.Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
+        Debug.Log("hi2");
         if (collision.gameObject.CompareTag("WalkableTilemap"))
         {
             Debug.Log("OFF PATH");
-            
         }
-
     }
 }
