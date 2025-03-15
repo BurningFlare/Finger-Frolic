@@ -7,6 +7,7 @@ public class PlayerControls : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private PlayerInput _playerInput;
+    private Vector2 nextFrameOffset;
 
     public static PlayerControls Instance { get; private set; }
     public ActionInputPlayerThing PlayerInputActions { get; private set; }
@@ -23,6 +24,7 @@ public class PlayerControls : MonoBehaviour
             return;
         }
         Instance = this;
+        nextFrameOffset = Vector2.zero;
     }
 
     private void Start()
@@ -84,13 +86,12 @@ public class PlayerControls : MonoBehaviour
     private void moveSomewhere(InputAction.CallbackContext context, Vector2 direction, bool isPressed)
     {
         Debug.Log($"{context.action}, {isPressed}");
-        if (isPressed)
-        {
-            _rb.MovePosition(_rb.position + direction);
-        }
-        else
-        {
-            _rb.MovePosition(_rb.position + direction);
-        }
+        nextFrameOffset += direction;
+    }
+
+    private void FixedUpdate()
+    {
+        _rb.MovePosition(_rb.position + nextFrameOffset);
+        nextFrameOffset = Vector2.zero;
     }
 }
