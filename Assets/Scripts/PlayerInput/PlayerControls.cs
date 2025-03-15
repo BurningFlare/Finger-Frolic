@@ -83,6 +83,7 @@ public class PlayerControls : MonoBehaviour
 
     private void moveSomewhere(InputAction.CallbackContext context, Vector2 direction, bool isPressed)
     {
+        Debug.Log($"{context.action}, {isPressed}");
         if (isPressed)
         {
             _rb.MovePosition(_rb.position + direction);

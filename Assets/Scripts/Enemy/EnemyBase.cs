@@ -2,6 +2,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(EnemyMove))]
 public class EnemyBase : MonoBehaviour
 {
     protected EnemyMove enemyMoveComponent;
@@ -21,7 +22,7 @@ public class EnemyBase : MonoBehaviour
     public void Move()
     {
         // TODO implement moving
-        enemyMoveComponent.GetMovePosition();
+        //enemyMoveComponent.GetMovePosition();
     }
 
     public bool IsStunned()
