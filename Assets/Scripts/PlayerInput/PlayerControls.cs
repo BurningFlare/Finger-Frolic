@@ -15,8 +15,7 @@ public class PlayerControls : MonoBehaviour
     ControlToggler SPress;
     ControlToggler APress;
     ControlToggler DPress;
-
-    private void Start()
+    private void Awake()
     {
         if (Instance != null)
         {
@@ -24,13 +23,14 @@ public class PlayerControls : MonoBehaviour
             return;
         }
         Instance = this;
+    }
+
+    private void Start()
+    {
         WPress = new ControlToggler(new Vector2(0, 1));
         SPress = new ControlToggler(new Vector2(0, -1));
         APress = new ControlToggler(new Vector2(-1, 0));
         DPress = new ControlToggler(new Vector2(1, 0));
-    }
-    private void Awake()
-    {
         _rb = GetComponent<Rigidbody2D>();
         _playerInput = GetComponent<PlayerInput>();
         PlayerInputActions = new ActionInputPlayerThing();
@@ -40,13 +40,20 @@ public class PlayerControls : MonoBehaviour
 
     public class ControlToggler
     {
-        System.Action<InputAction.CallbackContext, bool> callback;
-        System.Action<InputAction.CallbackContext, bool> enemyCallback;
+        private readonly System.Action<InputAction.CallbackContext, bool> callback;
+        private readonly System.Action<InputAction.CallbackContext, bool> enemyCallback;
         bool keyPressed = false;
 
         public ControlToggler(Vector2 direction)
         {
-            callback = (context, isPressed) => PlayerControls.Instance.moveSomewhere(context, direction, isPressed);
+            callback = (context, isPressed) =>
+            {
+                PlayerControls.Instance.moveSomewhere(context, direction, isPressed);
+            };
+            if (EnemyManager.Instance == null)
+            {
+                Debug.LogWarning("EnemyManager was null... check if you have one in the scene");
+            }
             enemyCallback = EnemyManager.Instance.InputReceived;
         }
 
@@ -78,12 +85,10 @@ public class PlayerControls : MonoBehaviour
     {
         if (isPressed)
         {
-            Debug.Log("PRESSED KEY");
             _rb.MovePosition(_rb.position + direction);
         }
         else
         {
-            Debug.Log("RELEASED KEY");
             _rb.MovePosition(_rb.position + direction);
         }
     }

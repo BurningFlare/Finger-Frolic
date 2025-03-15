@@ -10,15 +10,13 @@ public class EnemyManager : MonoBehaviour
     // singleton
     public static EnemyManager Instance { get; private set; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         if (Instance != null)
         {
             Destroy(this);
             return;
         }
-
         Instance = this;
         _enemiesList = new List<EnemyBase>();
     }

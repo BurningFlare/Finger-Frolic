@@ -7,7 +7,7 @@ public class EnemyBase : MonoBehaviour
     protected EnemyMove enemyMoveComponent;
     int _stunTimer;
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
         EnemyManager.Instance.AddEnemy(this);
         _stunTimer = 0;
