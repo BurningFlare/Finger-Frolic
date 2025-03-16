@@ -3,14 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMove : MonoBehaviour
+public class EnemyMove : MovementPath
 {
     const int DEPTH_LIMIT = 100;
-
-    public virtual void GetMovePosition()
-    {
-
-    }
 
     // uses A* to calculate the best path through the tilemap
     public IList<Vector2> GetBestPathTo(Vector2 position)

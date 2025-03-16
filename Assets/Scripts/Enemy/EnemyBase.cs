@@ -2,10 +2,10 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(EnemyMove))]
+[RequireComponent(typeof(MovementPath))]
 public class EnemyBase : MonoBehaviour
 {
-    protected EnemyMove enemyMoveComponent;
+    protected MovementPath enemyMoveComponent;
     int _stunTimer;
 
     protected virtual void Start()
