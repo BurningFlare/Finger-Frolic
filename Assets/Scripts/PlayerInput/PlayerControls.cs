@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +11,7 @@ public class PlayerControls : MonoBehaviour
 
     public static PlayerControls Instance { get; private set; }
     public ActionInputPlayerThing PlayerInputActions { get; private set; }
+    private AnimateMovingSomehow _movementController;
 
     ControlToggler WPress;
     ControlToggler SPress;
@@ -27,6 +29,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Start()
     {
+        _movementController = GetComponent<AnimateMovingSomehow>();
         WPress = new ControlToggler(new Vector2(0, 1));
         SPress = new ControlToggler(new Vector2(0, -1));
         APress = new ControlToggler(new Vector2(-1, 0));
@@ -84,7 +87,6 @@ public class PlayerControls : MonoBehaviour
     private void moveSomewhere(InputAction.CallbackContext context, Vector2 direction, bool isPressed)
     {
         //Debug.Log($"{context.action}, {isPressed}");
-        _rb.MovePosition(_rb.position + direction);
-        _rb.position += direction;
+        _movementController.Move(_rb, direction, Ease.OutQuad);
     }
 }
