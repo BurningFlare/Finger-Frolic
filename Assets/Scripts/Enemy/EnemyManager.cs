@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class EnemyManager : MonoBehaviour
 {
 
-    private IList<EnemyBase> _enemiesList;
+    public IList<EnemyBase> EnemiesList { get; private set; }
 
     // singleton
     public static EnemyManager Instance { get; private set; }
@@ -18,12 +18,12 @@ public class EnemyManager : MonoBehaviour
             return;
         }
         Instance = this;
-        _enemiesList = new List<EnemyBase>();
+        EnemiesList = new List<EnemyBase>();
     }
 
     public void InputReceived(InputAction.CallbackContext context, bool pressedDown)
     {
-        foreach (EnemyBase enemy in _enemiesList)
+        foreach (EnemyBase enemy in EnemiesList)
         {
             enemy.InputReceived(pressedDown);
         }
@@ -31,11 +31,11 @@ public class EnemyManager : MonoBehaviour
 
     public void AddEnemy(EnemyBase enemy)
     {
-        _enemiesList.Add(enemy);
+        EnemiesList.Add(enemy);
     }
 
     public void RemoveEnemy(EnemyBase enemy)
     {
-        _enemiesList.Remove(enemy);
+        EnemiesList.Remove(enemy);
     }
 }
