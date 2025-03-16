@@ -110,6 +110,11 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
         return _tilemap.WorldToCell(worldPos) - _bounds.min;
     }
 
+    public Vector2 GetWorldPos(Vector3Int tileArrayPos)
+    {
+        return _tilemap.CellToWorld(tileArrayPos + _bounds.min);
+    }
+
     public void PrintDebug()
     {
         string currString = "";

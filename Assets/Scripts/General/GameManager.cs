@@ -5,7 +5,15 @@ using UnityEngine.Tilemaps;
 public class GameManager : MonoBehaviour
 {
     // singleton
-    static GameManager instance;
+    public static GameManager Instance { get; private set; }
+
+    public TilesAndGameObjectsBinder GroundTilesManager
+    {
+        get
+        {
+            return _groundTilesManager;
+        }
+    }
 
     [SerializeField] private Tilemap _groundTilemap;
     [SerializeField] private TilesAndGameObjectsBinder _groundTilesManager;
@@ -14,12 +22,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
+        if (Instance != null)
         {
             Destroy(this);
             return;
         }
-        instance = this;
+        Instance = this;
         _groundTilesManager = GetComponent<TilesAndGameObjectsBinder>();
         _groundTilesManager.LoadTiles(_groundTilemap);
         _groundTilesManager.TrackGameObject(_player);
