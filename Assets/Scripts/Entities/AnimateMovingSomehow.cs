@@ -7,8 +7,6 @@ public class AnimateMovingSomehow : MonoBehaviour
     private Tweener currentTween;
     private Vector2 landingPosition;
     [SerializeField] private float duration = 0.1f;
-
-
     public void Move(Rigidbody2D rb, Vector2 direction, Ease easeType = Ease.OutQuad)
     {
         if (currentTween != null && currentTween.IsActive())
@@ -17,11 +15,11 @@ public class AnimateMovingSomehow : MonoBehaviour
             rb.position = landingPosition;
         }
         landingPosition = rb.position + direction;
-
-
-        currentTween = rb.DOMove(rb.position + direction, duration).SetEase(easeType);
-
-
-
+        currentTween = rb.DOMove(landingPosition, duration)
+         .SetEase(easeType)
+         .OnComplete(() =>
+         {
+             rb.position = landingPosition;
+         });
     }
 }
