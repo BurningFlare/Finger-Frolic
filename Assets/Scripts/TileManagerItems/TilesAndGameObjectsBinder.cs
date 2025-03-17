@@ -6,6 +6,11 @@ using UnityEngine.UIElements;
 
 public class TilesAndGameObjectsBinder : MonoBehaviour
 {
+    // not sure if this is needed but can't hurt to be safe
+    static readonly TileInfo OUT_OF_BOUNDS = new TileInfo();
+    [Tooltip("To define how far outside of the outer-most tiles enemies can move")]
+    [SerializeField] private int margin = 1;
+
     public class TileInfo
     {
         public bool _hasTile;
@@ -26,8 +31,13 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
     public void LoadTiles(Tilemap tiles)
     {
         tiles.CompressBounds();
-        _tilemap = tiles;
         _bounds = tiles.cellBounds;
+        tiles.size = _bounds.size + new Vector3Int(2 * margin, 2 * margin, 0);
+        tiles.origin = tiles.origin - new Vector3Int(margin, margin, 0);
+        tiles.ResizeBounds();
+        _bounds = tiles.cellBounds;
+
+        _tilemap = tiles;
         _tilesList = new List<IList<TileInfo>>(_bounds.size.x);
         for (int i = 0; i < _bounds.size.x; ++i)
         {
@@ -47,7 +57,7 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
         {
             if (!TrackGameObject(enemy.gameObject))
             {
-                Debug.Log("Enemy was not added!");
+                Debug.LogWarning("Enemy was not added!");
             }
         }
     }
@@ -57,7 +67,7 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
         Vector3Int position = GetTileArrayPos(gameObjectToTrack.transform.position);
         if (_tilesList[position.x][position.y]._tileItem != null)
         {
-            Debug.Log($"Something is overlapping with object on the tilemap at {position.x}, {position.y}");
+            Debug.LogWarning($"Something is overlapping with object on the tilemap at {position.x}, {position.y}");
             return false;
         }
         else
@@ -69,9 +79,15 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
 
     public void Set(Vector3Int tilePos, GameObject gameObj, bool checkEmpty = true)
     {
+        if (!InBounds(tilePos))
+        {
+            Debug.LogWarning($"Tried to set position {tilePos} to {gameObj.name} but was out of bounds");
+            return;
+        }
+
         if (checkEmpty && _tilesList[tilePos.x][tilePos.y]._tileItem != null)
         {
-            Debug.Log($"{_tilesList[tilePos.x][tilePos.y]._tileItem.name} was already in {tilePos.x}, {tilePos.y}!");
+            Debug.LogWarning($"{_tilesList[tilePos.x][tilePos.y]._tileItem.name} was already in {tilePos.x}, {tilePos.y}!");
         }
         _tilesList[tilePos.x][tilePos.y]._tileItem = gameObj;
     }
@@ -80,7 +96,7 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
     {
         if (GetGameObjectAt(objToErase.transform.position) != objToErase)
         {
-            Debug.Log($"The object you tried to erase is not at the same spot anymore, please track the object properly!");
+            Debug.LogWarning($"The object you tried to erase is not at the same spot anymore, please track the object properly!");
             return false;
         }
         return Erase(objToErase.transform.position, checkErase);
@@ -96,7 +112,7 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
         }
         if (checkErase)
         {
-            Debug.Log($"There was nothing to erase at {position.x}, {position.y}");
+            Debug.LogWarning($"There was nothing to erase at {position.x}, {position.y}");
         }
         return false;
     }
@@ -110,7 +126,7 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
         }
         if (checkErase)
         {
-            Debug.Log($"There was nothing to erase at {tilePos.x}, {tilePos.y}");
+            Debug.LogWarning($"There was nothing to erase at {tilePos.x}, {tilePos.y}");
         }
         return false;
     }
@@ -128,7 +144,16 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
 
     public TileInfo GetTileInfoAt(Vector3Int tilePos)
     {
-        return _tilesList[tilePos.x][tilePos.y];
+        if (InBounds(tilePos))
+        {
+            return _tilesList[tilePos.x][tilePos.y];
+        }
+        return OUT_OF_BOUNDS;
+    }
+
+    public bool InBounds(Vector3Int tilePos)
+    {
+        return tilePos.x >= 0 && tilePos.x < _bounds.size.x && tilePos.y >= 0 && tilePos.y < _bounds.size.y;
     }
 
     public bool IsOccupied(Vector2 pos)

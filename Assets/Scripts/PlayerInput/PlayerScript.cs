@@ -19,13 +19,13 @@ public class PlayerScript : MonoBehaviour
             return;
         }
         Instance = this;
-    }
-    void Start()
-    {
         PlayerMovement = GetComponent<PlayerMovement>();
         PlayerPositionTracker = GetComponent<EntityTilePositionTracker>();
         PlayerControls = GetComponent<PlayerControls>();
         PlayerInputActions = new IA_PlayerControls();
+    }
+    void Start()
+    {
         PlayerControls.BindControls(PlayerInputActions);
         PlayerInputActions.Player.Enable();
     }

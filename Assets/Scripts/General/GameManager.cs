@@ -42,6 +42,5 @@ public class GameManager : MonoBehaviour
     {
         yield return null;
         _groundTilesManager.PopulateEnemies(EnemyManager.Instance.EnemiesList);
-        _groundTilesManager.PrintDebug();
     }
 }

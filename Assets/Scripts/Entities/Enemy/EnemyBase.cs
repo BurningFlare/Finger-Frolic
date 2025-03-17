@@ -9,14 +9,6 @@ public class EnemyBase : MonoBehaviour
 {
     protected MovementPath _enemyMoveComponent;
     int _stunTimer;
-    Rigidbody2D _rb;
-    AnimateMoving _moveAnim;
-
-    private void Awake()
-    {
-        _rb = GetComponent<Rigidbody2D>();
-        _moveAnim = GetComponent<AnimateMoving>();
-    }
 
     protected virtual void Start()
     {
@@ -53,7 +45,10 @@ public class EnemyBase : MonoBehaviour
         }
         else
         {
-            Move();
+            if (_enemyMoveComponent != null)
+            {
+                Move();
+            }
         }
     }
 }
