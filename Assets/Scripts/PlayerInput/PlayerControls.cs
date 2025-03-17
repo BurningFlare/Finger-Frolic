@@ -6,12 +6,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerControls : MonoBehaviour
 {
+    private PlayerScript _player;
     private Rigidbody2D _rb;
     private PlayerInput _playerInput;
 
     public static PlayerControls Instance { get; private set; }
-    public ActionInputPlayerThing PlayerInputActions { get; private set; }
-    private AnimateMovingSomehow _movementController;
+    private AnimateMoving _movementController;
 
     ControlToggler WPress;
     ControlToggler SPress;
@@ -29,16 +29,14 @@ public class PlayerControls : MonoBehaviour
 
     private void Start()
     {
-        _movementController = GetComponent<AnimateMovingSomehow>();
+        _player = GetComponent<PlayerScript>();
+        _movementController = GetComponent<AnimateMoving>();
         WPress = new ControlToggler(new Vector2(0, 1));
         SPress = new ControlToggler(new Vector2(0, -1));
         APress = new ControlToggler(new Vector2(-1, 0));
         DPress = new ControlToggler(new Vector2(1, 0));
         _rb = GetComponent<Rigidbody2D>();
         _playerInput = GetComponent<PlayerInput>();
-        PlayerInputActions = new ActionInputPlayerThing();
-        BindControls();
-        PlayerInputActions.Player.Enable();
     }
 
     public class ControlToggler
@@ -51,7 +49,7 @@ public class PlayerControls : MonoBehaviour
         {
             callback = (context, isPressed) =>
             {
-                PlayerControls.Instance.moveSomewhere(context, direction, isPressed);
+                PlayerScript.Instance.moveSomewhere(context, direction, isPressed);
             };
             if (EnemyManager.Instance == null)
             {
@@ -72,7 +70,7 @@ public class PlayerControls : MonoBehaviour
 
     }
 
-    private void BindControls()
+    public void BindControls(IA_PlayerControls PlayerInputActions)
     {
         PlayerInputActions.Player.W.performed += context => WPress.checkOnOrOff(true, context);
         PlayerInputActions.Player.W.canceled += context => WPress.checkOnOrOff(false, context);
@@ -82,11 +80,5 @@ public class PlayerControls : MonoBehaviour
         PlayerInputActions.Player.A.canceled += context => APress.checkOnOrOff(false, context);
         PlayerInputActions.Player.D.performed += context => DPress.checkOnOrOff(true, context);
         PlayerInputActions.Player.D.canceled += context => DPress.checkOnOrOff(false, context);
-    }
-
-    private void moveSomewhere(InputAction.CallbackContext context, Vector2 direction, bool isPressed)
-    {
-        //Debug.Log($"{context.action}, {isPressed}");
-        _movementController.Move(_rb, direction, Ease.OutQuad);
     }
 }

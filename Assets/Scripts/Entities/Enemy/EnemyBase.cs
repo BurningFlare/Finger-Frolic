@@ -4,18 +4,18 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(MovementPath))]
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(AnimateMovingSomehow))]
+[RequireComponent(typeof(AnimateMoving))]
 public class EnemyBase : MonoBehaviour
 {
     protected MovementPath _enemyMoveComponent;
     int _stunTimer;
     Rigidbody2D _rb;
-    AnimateMovingSomehow _moveAnim;
+    AnimateMoving _moveAnim;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _moveAnim = GetComponent<AnimateMovingSomehow>();
+        _moveAnim = GetComponent<AnimateMoving>();
     }
 
     protected virtual void Start()

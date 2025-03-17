@@ -2,7 +2,7 @@ using DG.Tweening;
 using System;
 using UnityEngine;
 
-public class AnimateMovingSomehow : MonoBehaviour
+public class AnimateMoving : MonoBehaviour
 {
     private Tweener currentTween;
     private Vector2 landingPosition;

@@ -6,9 +6,9 @@ public class PlayerScript : MonoBehaviour
 {
     public static PlayerScript Instance { get; private set; }
     private Rigidbody2D _rb;
-    private ActionInputPlayerThing PlayerInputActions;
-    private PlayerMovement _playerMovement;
-    private AnimateMovingSomehow _movementController;
+    private IA_PlayerControls PlayerInputActions;
+    private PlayerControls _playerControls;
+    private AnimateMoving _movementController;
 
     private void Awake()
     {
@@ -22,10 +22,10 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _movementController = GetComponent<AnimateMovingSomehow>();
-        _playerMovement = GetComponent<PlayerMovement>();
-        PlayerInputActions = new ActionInputPlayerThing();
-        _playerMovement.BindControls(PlayerInputActions);
+        _movementController = GetComponent<AnimateMoving>();
+        _playerControls = GetComponent<PlayerControls>();
+        PlayerInputActions = new IA_PlayerControls();
+        _playerControls.BindControls(PlayerInputActions);
         PlayerInputActions.Player.Enable();
 
     }
@@ -36,9 +36,4 @@ public class PlayerScript : MonoBehaviour
         _movementController.Move(_rb, direction, Ease.OutQuad);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

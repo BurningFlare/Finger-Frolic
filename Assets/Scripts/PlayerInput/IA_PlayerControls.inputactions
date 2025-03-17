@@ -1,5 +1,5 @@
 {
-    "name": "ActionInputPlayerThing",
+    "name": "IA_PlayerControls",
     "maps": [
         {
             "name": "Player",

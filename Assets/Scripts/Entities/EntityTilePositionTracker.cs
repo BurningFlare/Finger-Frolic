@@ -1,11 +1,11 @@
 using UnityEngine;
 
 // purpose of this class is to track tile positions for ease of communicating with the tiles manager and movement scripts
-[RequireComponent(typeof(AnimateMovingSomehow))]
+[RequireComponent(typeof(AnimateMoving))]
 public class EntityTilePositionTracker : MonoBehaviour
 {
     Rigidbody2D _rb;
-    AnimateMovingSomehow _mover;
+    AnimateMoving _mover;
     TilesAndGameObjectsBinder _tilesManager;
     Vector3Int _position;
 
@@ -25,7 +25,7 @@ public class EntityTilePositionTracker : MonoBehaviour
 
     private void Awake()
     {
-        _mover = GetComponent<AnimateMovingSomehow>();
+        _mover = GetComponent<AnimateMoving>();
         _rb = GetComponent<Rigidbody2D>();
     }
 
