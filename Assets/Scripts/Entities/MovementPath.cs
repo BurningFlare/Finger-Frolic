@@ -1,18 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using TMPro.EditorUtilities;
 
+[RequireComponent(typeof(EntityTilePositionTracker))]
 public class MovementPath : MonoBehaviour
 {
     [SerializeField] protected List<Transform> _pathNodes = new();
     [SerializeField] protected bool _loop = false;
     [SerializeField] protected bool _reversedDirection = false;
 
-    protected Vector3Int _playerCurrentPosition;
+    EntityTilePositionTracker _positionTracker;
 
     TilesAndGameObjectsBinder _groundTilesManager;
-    public System.Action<Vector2> MoveAction { get; set; }
 
     private int _DONOTACCESScurrNodeIndex;
     private int _DONOTACCESnextNodeIndex;
@@ -44,6 +43,11 @@ public class MovementPath : MonoBehaviour
     private Vector3Int _currNodePosition;
     private Vector3Int _nextNodePosition;
 
+    private void Awake()
+    {
+        _positionTracker = GetComponent<EntityTilePositionTracker>();
+    }
+
     private void Start()
     {
         _groundTilesManager = GameManager.Instance.GroundTilesManager;
@@ -65,7 +69,6 @@ public class MovementPath : MonoBehaviour
             _pathNodes[possibleFirstNode] = startNodeReplacement.transform;
             CurrNodeIndex = possibleFirstNode;
             UpdateNextNode();
-            SyncPosition();
         }
     }
 
@@ -78,18 +81,12 @@ public class MovementPath : MonoBehaviour
     public void AdvancePosition()
     {
         Vector3Int direction = GetMoveDirection();
-        MoveAction(new Vector2(direction.x, direction.y));
-        Debug.Log($"{_playerCurrentPosition}, {_playerCurrentPosition + direction}, {_nextNodePosition}");
-        _playerCurrentPosition += direction;
-        if (_playerCurrentPosition == _nextNodePosition)
+        _positionTracker.CurrentTilePosition += direction;
+        if (_positionTracker.CurrentTilePosition == _nextNodePosition)
         {
             AdvanceNextNode();
         }
-    }
-
-    public void SyncPosition()
-    {
-        _playerCurrentPosition = _groundTilesManager.GetTileArrayPos(transform.position);
+        _groundTilesManager.PrintDebug();
     }
 
     protected void AdvanceNextNode()

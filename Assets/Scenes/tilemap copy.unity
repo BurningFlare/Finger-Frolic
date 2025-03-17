@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 192591420}
   - component: {fileID: 192591424}
   - component: {fileID: 192591423}
+  - component: {fileID: 192591425}
   m_Layer: 0
   m_Name: EnemyBase
   m_TagString: Untagged
@@ -282,6 +283,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &192591425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192591417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 533414ff445bf884fba43e424bc2900c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &227409636
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,7 +366,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -379,19 +392,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1098821003098935389, guid: de264e6a86b24b143a27f3d7d186501b, type: 3}
   m_PrefabInstance: {fileID: 717569622}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &336984084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 336984076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f2fdfbe91718e347b55391fc517ae31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0.1
 --- !u!1 &451871130
 GameObject:
   m_ObjectHideFlags: 0
@@ -2394,10 +2394,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1098821003098935389, guid: de264e6a86b24b143a27f3d7d186501b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 336984084}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de264e6a86b24b143a27f3d7d186501b, type: 3}
 --- !u!1 &766873645
 GameObject:

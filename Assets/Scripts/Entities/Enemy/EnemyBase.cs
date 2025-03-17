@@ -21,7 +21,6 @@ public class EnemyBase : MonoBehaviour
     protected virtual void Start()
     {
         _enemyMoveComponent = GetComponent<MovementPath>();
-        _enemyMoveComponent.MoveAction = (Vector2 direction) => { _moveAnim.Move(_rb, direction); };
         EnemyManager.Instance.AddEnemy(this);
         _stunTimer = 0;
     }
