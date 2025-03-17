@@ -1,17 +1,9 @@
-﻿using DG.Tweening;
-using System.Collections;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerControls : MonoBehaviour
 {
-    private PlayerScript _player;
-    private Rigidbody2D _rb;
-    private PlayerInput _playerInput;
-
     public static PlayerControls Instance { get; private set; }
-    private AnimateMoving _movementController;
 
     ControlToggler WPress;
     ControlToggler SPress;
@@ -29,14 +21,10 @@ public class PlayerControls : MonoBehaviour
 
     private void Start()
     {
-        _player = GetComponent<PlayerScript>();
-        _movementController = GetComponent<AnimateMoving>();
         WPress = new ControlToggler(new Vector2(0, 1));
         SPress = new ControlToggler(new Vector2(0, -1));
         APress = new ControlToggler(new Vector2(-1, 0));
         DPress = new ControlToggler(new Vector2(1, 0));
-        _rb = GetComponent<Rigidbody2D>();
-        _playerInput = GetComponent<PlayerInput>();
     }
 
     public class ControlToggler
@@ -49,7 +37,7 @@ public class PlayerControls : MonoBehaviour
         {
             callback = (context, isPressed) =>
             {
-                PlayerScript.Instance.moveSomewhere(context, direction, isPressed);
+                PlayerScript.Instance.PlayerMovement.MoveSomewhere(context, direction, isPressed);
             };
             if (EnemyManager.Instance == null)
             {

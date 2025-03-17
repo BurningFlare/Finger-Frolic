@@ -86,7 +86,6 @@ public class MovementPath : MonoBehaviour
         {
             AdvanceNextNode();
         }
-        _groundTilesManager.PrintDebug();
     }
 
     protected void AdvanceNextNode()

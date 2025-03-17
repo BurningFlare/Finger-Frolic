@@ -8,6 +8,7 @@ public class EntityTilePositionTracker : MonoBehaviour
     AnimateMoving _mover;
     TilesAndGameObjectsBinder _tilesManager;
     Vector3Int _position;
+    System.Func<Vector3Int, TilesAndGameObjectsBinder.TileInfo, bool> MovementChecks { get; set; }
 
     public Vector3Int CurrentTilePosition
     {
@@ -15,11 +16,21 @@ public class EntityTilePositionTracker : MonoBehaviour
         {
             return _position;
         }
+        // Setting this will also tween the entity position, be careful!!!
         set
         {
             Vector3Int direction = value - _position;
-            _mover.Move(_rb, new Vector2(direction.x, direction.y));
-            _position = value;
+            if (!_tilesManager.Erase(_position, true))
+            {
+                Debug.Log($"{gameObject.name} was not at the expected posiiton of {_position}");
+            }
+            if (MovementChecks == null || MovementChecks(value, _tilesManager.GetTileInfoAt(value)))
+            {
+                _tilesManager.Set(value, gameObject);
+                _mover.Move(_rb, new Vector2(direction.x, direction.y));
+                _position = value;
+                _tilesManager.PrintDebug();
+            }
         }
     }
 

@@ -1,14 +1,15 @@
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(EntityTilePositionTracker))]
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerScript : MonoBehaviour
 {
     public static PlayerScript Instance { get; private set; }
-    private Rigidbody2D _rb;
-    private IA_PlayerControls PlayerInputActions;
-    private PlayerControls _playerControls;
-    private AnimateMoving _movementController;
+    public IA_PlayerControls PlayerInputActions { get; private set; }
+    public PlayerControls PlayerControls { get; private set; }
+    public EntityTilePositionTracker PlayerPositionTracker { get; private set; }
+    public PlayerMovement PlayerMovement { get; private set; }
 
     private void Awake()
     {
@@ -21,19 +22,11 @@ public class PlayerScript : MonoBehaviour
     }
     void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();
-        _movementController = GetComponent<AnimateMoving>();
-        _playerControls = GetComponent<PlayerControls>();
+        PlayerMovement = GetComponent<PlayerMovement>();
+        PlayerPositionTracker = GetComponent<EntityTilePositionTracker>();
+        PlayerControls = GetComponent<PlayerControls>();
         PlayerInputActions = new IA_PlayerControls();
-        _playerControls.BindControls(PlayerInputActions);
+        PlayerControls.BindControls(PlayerInputActions);
         PlayerInputActions.Player.Enable();
-
     }
-
-    public void moveSomewhere(InputAction.CallbackContext context, Vector2 direction, bool isPressed)
-    {
-        //Debug.Log($"{context.action}, {isPressed}");
-        _movementController.Move(_rb, direction, Ease.OutQuad);
-    }
-
 }

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class TilesAndGameObjectsBinder : MonoBehaviour
 {
-    class TileInfo
+    public class TileInfo
     {
         public bool _hasTile;
         public GameObject _tileItem;
@@ -54,8 +54,6 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
 
     public bool TrackGameObject(GameObject gameObjectToTrack)
     {
-
-
         Vector3Int position = GetTileArrayPos(gameObjectToTrack.transform.position);
         if (_tilesList[position.x][position.y]._tileItem != null)
         {
@@ -67,6 +65,15 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
             _tilesList[position.x][position.y]._tileItem = gameObjectToTrack;
             return true;
         }
+    }
+
+    public void Set(Vector3Int tilePos, GameObject gameObj, bool checkEmpty = true)
+    {
+        if (checkEmpty && _tilesList[tilePos.x][tilePos.y]._tileItem != null)
+        {
+            Debug.Log($"{_tilesList[tilePos.x][tilePos.y]._tileItem.name} was already in {tilePos.x}, {tilePos.y}!");
+        }
+        _tilesList[tilePos.x][tilePos.y]._tileItem = gameObj;
     }
 
     public bool Erase(GameObject objToErase, bool checkErase = true)
@@ -94,10 +101,34 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
         return false;
     }
 
+    public bool Erase(Vector3Int tilePos, bool checkErase = true)
+    {
+        if (_tilesList[tilePos.x][tilePos.y]._tileItem != null)
+        {
+            _tilesList[tilePos.x][tilePos.y]._tileItem = null;
+            return true;
+        }
+        if (checkErase)
+        {
+            Debug.Log($"There was nothing to erase at {tilePos.x}, {tilePos.y}");
+        }
+        return false;
+    }
+
     public GameObject GetGameObjectAt(Vector2 pos)
     {
         Vector3Int position = GetTileArrayPos(pos);
-        return _tilesList[position.x][position.y]._tileItem;
+        return GetGameObjectAt(position);
+    }
+
+    public GameObject GetGameObjectAt(Vector3Int tilePos)
+    {
+        return GetTileInfoAt(tilePos)._tileItem;
+    }
+
+    public TileInfo GetTileInfoAt(Vector3Int tilePos)
+    {
+        return _tilesList[tilePos.x][tilePos.y];
     }
 
     public bool IsOccupied(Vector2 pos)
