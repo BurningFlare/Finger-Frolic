@@ -87,46 +87,18 @@ public class TilesAndGameObjectsBinder : MonoBehaviour
 
         if (checkEmpty && _tilesList[tilePos.x][tilePos.y]._tileItem != null)
         {
-            Debug.LogWarning($"{_tilesList[tilePos.x][tilePos.y]._tileItem.name} was already in {tilePos.x}, {tilePos.y}!");
+            Debug.LogWarning($"{_tilesList[tilePos.x][tilePos.y]._tileItem.name} was already in {tilePos.x}, {tilePos.y}, but tried to set it to {gameObj.name}");
         }
         _tilesList[tilePos.x][tilePos.y]._tileItem = gameObj;
     }
 
-    public bool Erase(GameObject objToErase, bool checkErase = true)
-    {
-        if (GetGameObjectAt(objToErase.transform.position) != objToErase)
-        {
-            Debug.LogWarning($"The object you tried to erase is not at the same spot anymore, please track the object properly!");
-            return false;
-        }
-        return Erase(objToErase.transform.position, checkErase);
-    }
 
-    public bool Erase(Vector2 pos, bool checkErase = true)
+    public bool Erase(Vector3Int tilePos, GameObject onlyObjectToErase = null)
     {
-        Vector3Int position = GetTileArrayPos(pos);
-        if (_tilesList[position.x][position.y]._tileItem != null)
-        {
-            _tilesList[position.x][position.y]._tileItem = null;
-            return true;
-        }
-        if (checkErase)
-        {
-            Debug.LogWarning($"There was nothing to erase at {position.x}, {position.y}");
-        }
-        return false;
-    }
-
-    public bool Erase(Vector3Int tilePos, bool checkErase = true)
-    {
-        if (_tilesList[tilePos.x][tilePos.y]._tileItem != null)
+        if (onlyObjectToErase == null || _tilesList[tilePos.x][tilePos.y]._tileItem == onlyObjectToErase)
         {
             _tilesList[tilePos.x][tilePos.y]._tileItem = null;
             return true;
-        }
-        if (checkErase)
-        {
-            Debug.LogWarning($"There was nothing to erase at {tilePos.x}, {tilePos.y}");
         }
         return false;
     }
