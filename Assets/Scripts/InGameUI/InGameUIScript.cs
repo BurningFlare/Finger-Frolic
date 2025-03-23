@@ -23,7 +23,7 @@ public class InGameUIScript : MonoBehaviour
 
     public void ToggleButton(Image button, bool isActive)
     {
-        button.color = isActive ? Color.yellow : Color.white;
+        button.color = isActive ? Color.gray : Color.white;
     }
 
 

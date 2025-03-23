@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerControls : MonoBehaviour
 {
+    public InGameUIScript InGameUIScript { get; private set; }
     public static PlayerControls Instance { get; private set; }
     
     ControlToggler WPress;
@@ -21,22 +23,26 @@ public class PlayerControls : MonoBehaviour
 
     private void Start()
     {
-        WPress = new ControlToggler(new Vector2(0, 1));
-        SPress = new ControlToggler(new Vector2(0, -1));
-        APress = new ControlToggler(new Vector2(-1, 0));
-        DPress = new ControlToggler(new Vector2(1, 0));
+        WPress = new ControlToggler(new Vector2(0, 1), InGameUIScript.Instance.upKey);
+        SPress = new ControlToggler(new Vector2(0, -1), InGameUIScript.Instance.downKey);
+        APress = new ControlToggler(new Vector2(-1, 0), InGameUIScript.Instance.leftKey);
+        DPress = new ControlToggler(new Vector2(1, 0), InGameUIScript.Instance.rightKey);
     }
 
     public class ControlToggler
     {
         private readonly System.Action<InputAction.CallbackContext, bool> callback;
         private readonly System.Action<InputAction.CallbackContext, bool> enemyCallback;
+        private readonly Image uiButton;
         bool keyPressed = false;
 
-        public ControlToggler(Vector2 direction)
+        public ControlToggler(Vector2 direction, Image uiButton)
         {
+            
+            this.uiButton = uiButton;
             callback = (context, isPressed) =>
             {
+                Debug.Log("input received");
                 PlayerScript.Instance.PlayerMovement.MoveSomewhere(context, direction, isPressed);
             };
             if (EnemyManager.Instance == null)
@@ -50,9 +56,14 @@ public class PlayerControls : MonoBehaviour
         {
             if (keyPressed != p)
             {
+                Debug.Log("hello");
                 keyPressed = p;
                 callback(contextOnOrOff, keyPressed);
                 enemyCallback(contextOnOrOff, keyPressed);
+                if (InGameUIScript.Instance != null)
+                {
+                    InGameUIScript.Instance.ToggleButton(uiButton, keyPressed);
+                }
             }
         }
 
