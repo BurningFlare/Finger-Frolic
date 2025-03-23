@@ -29,4 +29,8 @@ public class PlayerScript : MonoBehaviour
         PlayerControls.BindControls(PlayerInputActions);
         PlayerInputActions.Player.Enable();
     }
+    private void OnDisable()
+    {
+        PlayerInputActions.Disable();
+    }
 }

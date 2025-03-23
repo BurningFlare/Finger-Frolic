@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerControls : MonoBehaviour
 {
     public static PlayerControls Instance { get; private set; }
-
+    
     ControlToggler WPress;
     ControlToggler SPress;
     ControlToggler APress;
@@ -69,4 +69,6 @@ public class PlayerControls : MonoBehaviour
         PlayerInputActions.Player.D.performed += context => DPress.checkOnOrOff(true, context);
         PlayerInputActions.Player.D.canceled += context => DPress.checkOnOrOff(false, context);
     }
+
+    
 }
