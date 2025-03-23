@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c6710f6d9719cbf41a392669db946a11
+guid: 677cc70f1ea03fd42844a121043e4fed
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4154153192459530125
-    second: RightKey_0
+      213: -3697858079898758732
+    second: DownKey_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,16 +96,29 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RightKey_0
+      name: DownKey_0
       rect:
         serializedVersion: 2
         x: 6
-        y: 5
-        width: 89
+        y: 6
+        width: 90
         height: 91
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 37015ec5eab7956c0800000000000000
-      internalID: -4154153192459530125
+      spriteID: 4b193dd1ba19eacc0800000000000000
+      internalID: -3697858079898758732
       vertices: []
       indices: 
       edges: []
@@ -134,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      DownKey_0: -3697858079898758732
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
