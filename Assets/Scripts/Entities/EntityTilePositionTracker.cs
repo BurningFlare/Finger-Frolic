@@ -22,13 +22,11 @@ public class EntityTilePositionTracker : MonoBehaviour
             if (MovementChecks == null || MovementChecks(value, _tilesManager.GetTileInfoAt(value)))
             {
                 Vector3Int direction = value - _position;
-                if (!_tilesManager.Erase(_position, true))
-                {
-                    Debug.Log($"{gameObject.name} was not at the expected posiiton of {_position}");
-                }
-                _tilesManager.Set(value, gameObject);
+                _tilesManager.Erase(_position, gameObject);
+                _tilesManager.Set(value, gameObject, false);
                 _mover.Move(_rb, new Vector2(direction.x, direction.y));
                 _position = value;
+                _tilesManager.PrintDebug();
             }
         }
     }
