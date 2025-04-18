@@ -6,7 +6,7 @@ public class PlayerControls : MonoBehaviour
 {
     public InGameUIScript InGameUIScript { get; private set; }
     public static PlayerControls Instance { get; private set; }
-    
+
     ControlToggler WPress;
     ControlToggler SPress;
     ControlToggler APress;
@@ -32,34 +32,25 @@ public class PlayerControls : MonoBehaviour
     public class ControlToggler
     {
         private readonly System.Action<InputAction.CallbackContext, bool> callback;
-        private readonly System.Action<InputAction.CallbackContext, bool> enemyCallback;
         private readonly Image uiButton;
         bool keyPressed = false;
 
         public ControlToggler(Vector2 direction, Image uiButton)
         {
-            
+
             this.uiButton = uiButton;
             callback = (context, isPressed) =>
             {
-                Debug.Log("input received");
-                PlayerScript.Instance.PlayerMovement.MoveSomewhere(context, direction, isPressed);
+                GameManager.Instance.InputReceived(context, direction, isPressed);
             };
-            if (EnemyManager.Instance == null)
-            {
-                Debug.LogWarning("EnemyManager was null... check if you have one in the scene");
-            }
-            enemyCallback = EnemyManager.Instance.InputReceived;
         }
 
         public void checkOnOrOff(bool p, InputAction.CallbackContext contextOnOrOff)
         {
             if (keyPressed != p)
             {
-                Debug.Log("hello");
                 keyPressed = p;
                 callback(contextOnOrOff, keyPressed);
-                enemyCallback(contextOnOrOff, keyPressed);
                 if (InGameUIScript.Instance != null)
                 {
                     InGameUIScript.Instance.ToggleButton(uiButton, keyPressed);
@@ -81,5 +72,5 @@ public class PlayerControls : MonoBehaviour
         PlayerInputActions.Player.D.canceled += context => DPress.checkOnOrOff(false, context);
     }
 
-    
+
 }

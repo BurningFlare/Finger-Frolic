@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
@@ -42,5 +43,11 @@ public class GameManager : MonoBehaviour
     {
         yield return null;
         _groundTilesManager.PopulateEnemies(EnemyManager.Instance.EnemiesList);
+    }
+
+    public void InputReceived(InputAction.CallbackContext context, Vector2 direction, bool isPressed)
+    {
+        PlayerScript.Instance.PlayerMovement.MoveSomewhere(context, direction, isPressed);
+        EnemyManager.Instance.InputReceived(context, isPressed);
     }
 }
