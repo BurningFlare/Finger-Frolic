@@ -24,34 +24,22 @@ public class AnimateMoving : MonoBehaviour
         {
             _currentTween.Kill();
             _rb.position = _landingPosition;
-
-            if (_nextFrameUpdater != null)
-            {
-                StopCoroutine(_nextFrameUpdater);
-            }
-
-            IEnumerator NextFrameWaiter()
-            {
-                yield return new WaitForEndOfFrame();
-                TweenToEnd(_rb, direction, easeType);
-            }
-
-            _nextFrameUpdater = StartCoroutine(NextFrameWaiter());
+            TweenToEnd(direction, easeType);
         }
         else
         {
-            TweenToEnd(_rb, direction, easeType);
+            TweenToEnd(direction, easeType);
         }
     }
 
-    private void TweenToEnd(Rigidbody2D rb, Vector2 direction, Ease easeType = Ease.OutQuad)
+    private void TweenToEnd(Vector2 direction, Ease easeType = Ease.OutQuad)
     {
-        _landingPosition = rb.position + direction;
-        _currentTween = rb.DOMove(_landingPosition, duration)
+        _landingPosition = _rb.position + direction;
+        _currentTween = _rb.DOMove(_landingPosition, duration)
          .SetEase(easeType)
          .OnComplete(() =>
          {
-             rb.position = _landingPosition;
+             _rb.position = _landingPosition;
          });
     }
 
