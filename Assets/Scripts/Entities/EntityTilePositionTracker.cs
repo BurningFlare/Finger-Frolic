@@ -4,7 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(AnimateMoving))]
 public class EntityTilePositionTracker : MonoBehaviour
 {
-    Rigidbody2D _rb;
     AnimateMoving _mover;
     TilesAndGameObjectsBinder _tilesManager;
     Vector3Int _originalPosition;
@@ -34,14 +33,13 @@ public class EntityTilePositionTracker : MonoBehaviour
 
     public virtual void RejectMove(Collision2D collision)
     {
-        _mover.RejectMove(_rb);
+        _mover.RejectMove();
         _position = _originalPosition;
     }
 
     private void Awake()
     {
         _mover = GetComponent<AnimateMoving>();
-        _rb = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
