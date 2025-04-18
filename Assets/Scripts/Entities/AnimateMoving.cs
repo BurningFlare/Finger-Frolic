@@ -9,15 +9,21 @@ public class AnimateMoving : MonoBehaviour
     private Coroutine _nextFrameUpdater;
     private Vector2 _landingPosition;
     private Vector2 _originalPosition;
+    private Rigidbody2D _rb;
     [SerializeField] private float duration = 0.1f;
 
-    public void Move(Rigidbody2D rb, Vector2 direction, Ease easeType = Ease.OutQuad)
+    private void Awake()
     {
-        _originalPosition = rb.position;
+        _rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void Move(Vector2 direction, Ease easeType = Ease.OutQuad)
+    {
+        _originalPosition = _rb.position;
         if (IsActive())
         {
             _currentTween.Kill();
-            rb.position = _landingPosition;
+            _rb.position = _landingPosition;
 
             if (_nextFrameUpdater != null)
             {
@@ -27,14 +33,14 @@ public class AnimateMoving : MonoBehaviour
             IEnumerator NextFrameWaiter()
             {
                 yield return new WaitForEndOfFrame();
-                TweenToEnd(rb, direction, easeType);
+                TweenToEnd(_rb, direction, easeType);
             }
 
             _nextFrameUpdater = StartCoroutine(NextFrameWaiter());
         }
         else
         {
-            TweenToEnd(rb, direction, easeType);
+            TweenToEnd(_rb, direction, easeType);
         }
     }
 

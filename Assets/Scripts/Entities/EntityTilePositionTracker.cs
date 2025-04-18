@@ -26,7 +26,7 @@ public class EntityTilePositionTracker : MonoBehaviour
                 Vector3Int direction = value - _position;
                 _tilesManager.Erase(_position, gameObject);
                 _tilesManager.Set(value, gameObject, false);
-                _mover.Move(_rb, new Vector2(direction.x, direction.y));
+                _mover.Move(new Vector2(direction.x, direction.y));
                 _position = value;
             }
         }
