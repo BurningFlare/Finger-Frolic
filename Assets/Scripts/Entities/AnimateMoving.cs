@@ -43,7 +43,7 @@ public class AnimateMoving : MonoBehaviour
          });
     }
 
-    public void RejectMove(Rigidbody2D rb, Ease easeType = Ease.OutQuad)
+    public void RejectMove(Ease easeType = Ease.OutQuad)
     {
         if (IsActive())
         {
@@ -52,11 +52,11 @@ public class AnimateMoving : MonoBehaviour
             Vector2 temp = _landingPosition;
             _landingPosition = _originalPosition;
             _originalPosition = temp;
-            _currentTween = rb.DOMove(_landingPosition, remainingDuration)
+            _currentTween = _rb.DOMove(_landingPosition, remainingDuration)
              .SetEase(easeType)
              .OnComplete(() =>
              {
-                 rb.position = _landingPosition;
+                 _rb.position = _landingPosition;
              });
         }
     }
