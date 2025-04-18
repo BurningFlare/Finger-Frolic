@@ -7,6 +7,7 @@ public class EntityTilePositionTracker : MonoBehaviour
     Rigidbody2D _rb;
     AnimateMoving _mover;
     TilesAndGameObjectsBinder _tilesManager;
+    Vector3Int _originalPosition;
     Vector3Int _position;
     public System.Func<Vector3Int, TilesAndGameObjectsBinder.TileInfo, bool> MovementChecks { get; set; }
 
@@ -21,14 +22,20 @@ public class EntityTilePositionTracker : MonoBehaviour
         {
             if (MovementChecks == null || MovementChecks(value, _tilesManager.GetTileInfoAt(value)))
             {
+                _originalPosition = _position;
                 Vector3Int direction = value - _position;
                 _tilesManager.Erase(_position, gameObject);
                 _tilesManager.Set(value, gameObject, false);
                 _mover.Move(_rb, new Vector2(direction.x, direction.y));
                 _position = value;
-                _tilesManager.PrintDebug();
             }
         }
+    }
+
+    public virtual void RejectMove(Collision2D collision)
+    {
+        _mover.RejectMove(_rb);
+        _position = _originalPosition;
     }
 
     private void Awake()

@@ -1,25 +1,74 @@
 using DG.Tweening;
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class AnimateMoving : MonoBehaviour
 {
-    private Tweener currentTween;
-    private Vector2 landingPosition;
+    private Tweener _currentTween;
+    private Coroutine _nextFrameUpdater;
+    private Vector2 _landingPosition;
+    private Vector2 _originalPosition;
     [SerializeField] private float duration = 0.1f;
+
     public void Move(Rigidbody2D rb, Vector2 direction, Ease easeType = Ease.OutQuad)
     {
-        if (currentTween != null && currentTween.IsActive())
+        _originalPosition = rb.position;
+        if (IsActive())
         {
-            currentTween.Kill();
-            rb.position = landingPosition;
+            _currentTween.Kill();
+            rb.position = _landingPosition;
+
+            if (_nextFrameUpdater != null)
+            {
+                StopCoroutine(_nextFrameUpdater);
+            }
+
+            IEnumerator NextFrameWaiter()
+            {
+                yield return new WaitForEndOfFrame();
+                TweenToEnd(rb, direction, easeType);
+            }
+
+            _nextFrameUpdater = StartCoroutine(NextFrameWaiter());
         }
-        landingPosition = rb.position + direction;
-        currentTween = rb.DOMove(landingPosition, duration)
+        else
+        {
+            TweenToEnd(rb, direction, easeType);
+        }
+    }
+
+    private void TweenToEnd(Rigidbody2D rb, Vector2 direction, Ease easeType = Ease.OutQuad)
+    {
+        _landingPosition = rb.position + direction;
+        _currentTween = rb.DOMove(_landingPosition, duration)
          .SetEase(easeType)
          .OnComplete(() =>
          {
-             rb.position = landingPosition;
+             rb.position = _landingPosition;
          });
+    }
+
+    public void RejectMove(Rigidbody2D rb, Ease easeType = Ease.OutQuad)
+    {
+        if (IsActive())
+        {
+            float remainingDuration = duration - _currentTween.Elapsed();
+            _currentTween.Kill();
+            Vector2 temp = _landingPosition;
+            _landingPosition = _originalPosition;
+            _originalPosition = temp;
+            _currentTween = rb.DOMove(_landingPosition, remainingDuration)
+             .SetEase(easeType)
+             .OnComplete(() =>
+             {
+                 rb.position = _landingPosition;
+             });
+        }
+    }
+
+    public bool IsActive()
+    {
+        return _currentTween != null && _currentTween.IsActive();
     }
 }
