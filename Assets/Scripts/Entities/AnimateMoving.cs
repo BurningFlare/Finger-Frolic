@@ -41,6 +41,7 @@ public class AnimateMoving : MonoBehaviour
          {
              _rb.position = _landingPosition;
          });
+
     }
 
     public void RejectMove(Ease easeType = Ease.OutQuad)
